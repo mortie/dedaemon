@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var syscheck = require("./js/syscheck");
 
 var modules = {

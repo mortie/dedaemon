@@ -4,6 +4,7 @@ module.exports = check;
 
 var needed = [
 	"feh",
+	"xinput"
 ];
 
 function need(str, cb) {
