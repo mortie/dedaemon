@@ -26,13 +26,21 @@ var config = {
 		},
 
 		{
+			type: "pointer",
+			name: "Razer Razer Naga",
+			options: [
+				[ "libinput Accel Speed", "-0.8" ],
+			],
+		},
+
+		{
 			type: "keyboard",
 			name: "*",
 			commands: [
 				"xset r rate 200 60",
 				"setxkbmap dvorak -option ctrl:swapcaps -option altwin:swap_alt_win",
-			]
-		}
+			],
+		},
 	],
 
 	wallpaper: {

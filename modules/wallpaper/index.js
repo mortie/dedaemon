@@ -63,10 +63,10 @@ function start(conf_, logger_, modules_) {
 	var dirname = pathlib.dirname(conf.path);
 	var basename = pathlib.basename(conf.path);
 
-	var run = debounce(runFeh);
+	var run = debounce(runFeh, 10);
 
-	fs.watch(dirname, (type, name) => {
-		if (name !== basename)
+	fs.watch(dirname, (evt, name) => {
+		if (name !== basename || evt !== "change")
 			return;
 
 		run();

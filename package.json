@@ -1,0 +1,18 @@
+{
+  "name": "dedaemon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "daemon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "gogs@git.mort.coffee:mort/dedaemon.git"
+  },
+  "author": "Martin Dørum Nygaard <martid0311@gmail.com> (http://mort.coffee)",
+  "license": "ISC",
+  "dependencies": {
+    "udev": "^0.4.0"
+  }
+}
