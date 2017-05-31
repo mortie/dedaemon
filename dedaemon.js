@@ -1,54 +1,22 @@
 #!/usr/bin/env node
 
 var syscheck = require("./js/syscheck");
+var parseConf = require("./js/parse-conf");
+var async = require("./js/async");
 
 var modules = {
-	display: require("./modules/display"),
+//	display: require("./modules/display"),
 	input: require("./modules/input"),
-	wallpaper: require("./modules/wallpaper")
+	wallpaper: require("./modules/wallpaper"),
+	process: require("./modules/process"),
 };
 
-var config = {
-	display: [
-		{
-			name: "*",
-			resolution: "max",
-			rate: "max",
-			where: { left_of: "primary" },
-		},
-	],
-
-	input: [
-		{
-			type: "pointer",
-			name: "*",
-			options: [,
-				[ "libinput Tapping Enabled", 1 ],
-			],
-		},
-
-		{
-			type: "pointer",
-			name: "Razer Razer Naga",
-			options: [
-				[ "libinput Accel Speed", "-0.8" ],
-			],
-		},
-
-		{
-			type: "keyboard",
-			name: "*",
-			commands: [
-				"xset r rate 200 60",
-				"setxkbmap dvorak -option ctrl:swapcaps -option altwin:swap_alt_win",
-			],
-		},
-	],
-
-	wallpaper: {
-		path: "/home/martin/background.jpg",
-	},
+if (!process.argv[2]) {
+	console.log("Usage:", process.argv[1], "<config>");
+	process.exit(1);
 }
+
+var config = parseConf(process.argv[2]);
 
 function createLogger(name) {
 	function log(pre, msg) {
@@ -67,21 +35,21 @@ function startAll() {
 		var mod = modules[i];
 		var conf = config[i] || {};
 
+		if (conf instanceof Array && conf.length === 0)
+			return;
+
 		mod.start(conf, createLogger(i), modules);
 	});
 }
 
 function stopAll(cb) {
 	var keys = Object.keys(modules);
+	var next = async(keys.length, cb);
+	keys.forEach(i => modules[i].stop(next));
+}
 
-	var cbs = keys.length;
-	function next() {
-		cbs -= 1;
-		if (cbs === 0)
-			cb();
-	}
-
-	keys.forEach(i => modules.stop(next));
+function onTerm() {
+	stopAll(() => process.exit(1));
 }
 
 syscheck(ok => {
@@ -90,3 +58,6 @@ syscheck(ok => {
 	else
 		console.error("Missing binaries, exiting.");
 });
+
+process.on("SIGTERM", onTerm);
+process.on("SIGINT", onTerm);

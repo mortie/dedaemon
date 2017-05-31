@@ -59,8 +59,8 @@ var runCmds = debounce(function() {
 
 // Devices which aren't keyboards or mice with names aren't interesting
 function filter(dev) {
-	return dev.NAME && dev.SUBSYSTEM === "input" &&
-		(dev.ID_INPUT_KEYBOARD || dev.ID_INPUT_MOUSE);
+	return dev.NAME &&
+		(dev.ID_INPUT_KEYBOARD || dev.ID_INPUT_MOUSE || dev.ID_INPUT_TOUCHPAD);
 }
 
 // name can be either an array or a string
@@ -94,13 +94,16 @@ function onchange(dev, evt) {
 	if (!filter(dev))
 		return;
 
+	var isKeyboard = !!dev.ID_INPUT_KEYBOARD;
+	var isPointer = !!(dev.ID_INPUT_MOUSE || dev.ID_INPUT_TOUCHPAD);
+
 	// Find out what to log
 	var inputType;
-	if (dev.ID_INPUT_KEYBOARD && dev.ID_INPUT_MOUSE)
-		inputType = "keyboard/mouse";
-	else if (dev.ID_INPUT_KEYBOARD)
+	if (isKeyboard && isPointer)
+		inputType = "keyboard/pointer";
+	else if (isKeyboard)
 		inputType = "keyboard";
-	else if (dev.ID_INPUT_MOUSE)
+	else if (isPointer)
 		inputType = "mouse";
 
 	// Log add/change
@@ -111,9 +114,9 @@ function onchange(dev, evt) {
 
 	// Run through and apply relevant rules
 	conf.forEach(entry => {
-		if (entry.type === "pointer" && !dev.ID_INPUT_MOUSE)
+		if (entry.type === "pointer" && !isPointer)
 			return;
-		if (entry.type === "keyboard" && !dev.ID_INPUT_KEYBOARD)
+		if (entry.type === "keyboard" && !isKeyboard)
 			return;
 		if (!nameMatches(dev, entry.name))
 			return;
@@ -148,9 +151,9 @@ function start(conf_, logger_, modules_) {
 	logger = logger_ || logger;
 	modules = modules_ || modules;
 
-	udev.list().forEach(dev => onchange(dev, "init"));
+	udev.list("input").forEach(dev => onchange(dev, "init"));
 
-	monitor = udev.monitor();
+	monitor = udev.monitor("input");
 	monitor.on("add", dev => onchange(dev, "add"));
 	monitor.on("change", dev => onchange(dev, "change"));
 }
@@ -161,5 +164,8 @@ function stop(cb) {
 }
 
 function event(name, ...params) {
-	logger.info("Event", name, params.toString());
+	switch (name) {
+	default:
+		logger.warn("Unknown event: "+name);
+	}
 }

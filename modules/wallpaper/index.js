@@ -78,11 +78,12 @@ function stop(cb) {
 }
 
 function event(name, ...params) {
-	logger.info("Event", name, params.toString());
-
 	switch (name) {
 	case "reload":
 		runFeh();
 		break;
+
+	default:
+		logger.warn("Unknown event:", name);
 	}
 }
