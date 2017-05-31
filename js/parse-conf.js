@@ -37,6 +37,7 @@ var configStructure = {
 			env: [ "object", "null" ],
 			restart: "bool",
 			as: [ "string", "null" ],
+			delay: [ "number", "null" ],
 		},
 	},
 }

@@ -12,7 +12,7 @@ var modules = {
 };
 
 if (!process.argv[2]) {
-	console.log("Usage:", process.argv[1], "<config>");
+	console.error("Usage:", process.argv[1], "<config>");
 	process.exit(1);
 }
 

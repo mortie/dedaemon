@@ -101,6 +101,7 @@ class Process {
 				this.child.kill("SIGKILL");
 			}
 
+			this.stopping = false;
 			cb();
 		}, 1000);
 	}
@@ -120,7 +121,11 @@ class ProcessGroup {
 	}
 
 	stop(cb) {
-		var next = async(this.procs.length, cb);
+		this.stopping = true;
+		var next = async(this.procs.length, () => {
+			this.stopping = false;
+			cb();
+		});
 		this.procs.forEach(p => p.stop(next));
 	}
 }
@@ -164,8 +169,17 @@ function start(conf_, logger_, modules_) {
 				"Invalid 'as' attribute:",
 				proc.as);
 		}
-		p.start();
+
 		procs[proc.name] = p;
+
+		if (proc.delay != null) {
+			setTimeout(() => {
+				if (!p.stopping)
+					p.start();
+			}, proc.delay);
+		} else {
+			p.start();
+		}
 	});
 }
 
