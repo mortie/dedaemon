@@ -1,10 +1,11 @@
 {
   "name": "dedaemon",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "daemon.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "make -C udev"
   },
   "repository": {
     "type": "git",
@@ -13,8 +14,7 @@
   "author": "Martin Dørum Nygaard <martid0311@gmail.com> (http://mort.coffee)",
   "license": "ISC",
   "dependencies": {
-    "hconfig": "^0.4.0",
-    "udev": "^0.4.0"
+    "hconfig": "^0.4.0"
   },
   "bin": {
     "dedaemon": "./dedaemon.js"

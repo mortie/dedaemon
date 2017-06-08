@@ -3,6 +3,7 @@
 var syscheck = require("./js/syscheck");
 var parseConf = require("./js/parse-conf");
 var async = require("./js/async");
+var udev = require("./udev");
 
 var modules = {
 //	display: require("./modules/display"),
@@ -49,6 +50,7 @@ function stopAll(cb) {
 }
 
 function onTerm() {
+	udev.exit();
 	stopAll(() => process.exit(1));
 }
 

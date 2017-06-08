@@ -1,4 +1,4 @@
-var udev = require("udev");
+var udev = require("../../udev");
 var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
 
@@ -11,8 +11,6 @@ exports.event = event;
 var conf;
 var logger;
 var modules;
-
-var monitor;
 
 // Set an xinput property
 function setProp(name, val, suppressWarnings) {
@@ -90,7 +88,7 @@ function nameMatches(dev, name) {
 	return true;
 }
 
-function onchange(dev, evt) {
+function onchange(dev) {
 	if (!filter(dev))
 		return;
 
@@ -107,9 +105,9 @@ function onchange(dev, evt) {
 		inputType = "mouse";
 
 	// Log add/change
-	if (evt === "add")
+	if (dev.ACTION === "add")
 		logger.info(inputType, dev.NAME, "added");
-	else if (evt === "change")
+	else if (dev.ACTION === "change")
 		logger.info(inputType, dev.NAME, "changed");
 
 	// Run through and apply relevant rules
@@ -151,15 +149,12 @@ function start(conf_, logger_, modules_) {
 	logger = logger_ || logger;
 	modules = modules_ || modules;
 
-	udev.list("input").forEach(dev => onchange(dev, "init"));
-
-	monitor = udev.monitor("input");
-	monitor.on("add", dev => onchange(dev, "add"));
-	monitor.on("change", dev => onchange(dev, "change"));
+	udev.list("input", devs => devs.forEach(onchange))
+	udev.monitor("input", onchange);
 }
 
 function stop(cb) {
-	monitor.close();
+	udev.unmonitor("input", onchange);
 	cb();
 }
 

@@ -1,4 +1,4 @@
-var udev = require("udev");
+var udev = require("../../udev");
 
 exports.start = start;
 exports.stop = stop;
@@ -8,12 +8,10 @@ var conf;
 var logger;
 var modules;
 
-var monitor;
-
-function onchange(dev, evt) {
-	if (evt === "add")
+function onchange(dev) {
+	if (dev.ACTION === "add")
 		logger.info("display added");
-	else if (evt === "change")
+	else if (dev.ACTION === "change")
 		logger.info("display changed");
 	else
 		logger.info(dev);
@@ -26,12 +24,11 @@ function start(conf_, logger_, modules_) {
 	logger = logger_ || logger;
 	modules = modules_ || modules;
 
-	monitor = udev.monitor("drm");
-	monitor.on("add", dev => onchange(dev, "add"));
-	monitor.on("change", dev => onchange(dev, "change"));
+	udev.monitor("drm", onchange);
 }
 
 function stop(cb) {
+	udev.unmonitor("drm", onchange);
 	cb();
 }
 
