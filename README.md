@@ -18,3 +18,7 @@ e.g:
 You probably want to run that on startup. If you're running i3wm, that means
 adding `exec --no-startup-id dedaemon ~/.config/dedaemon.hcnf` to
 `~/.i3/config`.
+
+## Configuration
+
+There will be stuff here later.
