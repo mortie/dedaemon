@@ -36,8 +36,23 @@ function findRate(mode, rate) {
 	return null;
 }
 
-function applyRule(primary, rule, display) {
+function randr(args) {
 	var cmd = "xrandr";
+
+	var child = spawn(cmd, args);
+	child.stderr.on("data", d => logger.warn("xrandr:", d.toString()));
+}
+
+function turnOff(display) {
+	var args = [
+		"--output", display.id,
+		"--off"
+	];
+
+	randr(args);
+}
+
+function applyRule(primary, rule, display) {
 	var args = [ "--output", display.id ];
 
 	if (rule.rate != null && rule.mode == null)
@@ -90,8 +105,7 @@ function applyRule(primary, rule, display) {
 		}
 	}
 
-	var child = spawn(cmd, args);
-	child.stderr.on("data", d => logger.warn("xrandr:", d.toString()));
+	randr(args);
 }
 
 function onchange() {
@@ -102,6 +116,10 @@ function onchange() {
 	}
 
 	xrandr.list(data => {
+
+		// Trun off all disconnected displays
+		data.displays.filter(d => !d.connected).forEach(turnOff);
+
 		var displays = data.displays.filter(d => d.connected);
 		var primary = displays.filter(d => d.primary)[0];
 
