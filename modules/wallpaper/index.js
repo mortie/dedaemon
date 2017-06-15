@@ -58,8 +58,6 @@ function start(conf_, logger_, modules_) {
 	if (!conf.path)
 		return logger.error("Expected conf.path");
 
-	runFeh();
-
 	var dirname = pathlib.dirname(conf.path);
 	var basename = pathlib.basename(conf.path);
 

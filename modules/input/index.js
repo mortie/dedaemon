@@ -3,10 +3,12 @@ var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
 
 var debounce = require("../../js/debounce");
+var table = require("../../js/table");
 
 exports.start = start;
 exports.stop = stop;
 exports.event = event;
+exports.list = list;
 
 var conf;
 var logger;
@@ -88,10 +90,7 @@ function nameMatches(dev, name) {
 	return true;
 }
 
-function onchange(dev) {
-	if (!filter(dev))
-		return;
-
+function gettype(dev) {
 	var isKeyboard = !!dev.ID_INPUT_KEYBOARD;
 	var isPointer = !!(dev.ID_INPUT_MOUSE || dev.ID_INPUT_TOUCHPAD);
 
@@ -102,7 +101,16 @@ function onchange(dev) {
 	else if (isKeyboard)
 		inputType = "keyboard";
 	else if (isPointer)
-		inputType = "mouse";
+		inputType = "pointer";
+
+	return { isKeyboard, isPointer, inputType };
+}
+
+function onchange(dev) {
+	if (!filter(dev))
+		return;
+
+	var { isKeyboard, isPointer, inputType } = gettype(dev);
 
 	// Log add/change
 	if (dev.ACTION === "add")
@@ -163,4 +171,17 @@ function event(name, ...params) {
 	default:
 		logger.warn("Unknown event: "+name);
 	}
+}
+
+function list(cb) {
+	udev.list("input", devs => {
+		var data = [];
+		devs.filter(filter).forEach((dev, i) => {
+			var { inputType } = gettype(dev);
+
+			data[i] = [ "name: "+dev.NAME+",", "type: "+inputType ];
+		});
+		table(console.error.bind(console), data, "\t");
+		cb();
+	});
 }

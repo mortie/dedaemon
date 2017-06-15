@@ -130,12 +130,19 @@ class ProcessGroup {
 	}
 }
 
-var procs = {};
+var procs;
 
 function start(conf_, logger_, modules_) {
 	conf = conf_ || conf;
 	logger = logger_ || logger;
 	modules = modules_ || modules;
+
+	procs = {};
+
+	if (conf == null) {
+		logger.info("No processes.");
+		return;
+	}
 
 	conf.forEach(proc => {
 		if (procs[proc.name])

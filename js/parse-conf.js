@@ -7,7 +7,7 @@ var configStructure = {
 		count: "many",
 		props: {
 			name: "string",
-			resolution: "string",
+			mode: "string",
 			rate: "string",
 			where: "object",
 		},

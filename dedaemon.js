@@ -6,18 +6,19 @@ var async = require("./js/async");
 var udev = require("./udev");
 
 var modules = {
-//	display: require("./modules/display"),
+	display: require("./modules/display"),
 	input: require("./modules/input"),
 	wallpaper: require("./modules/wallpaper"),
 	process: require("./modules/process"),
 };
 
 if (!process.argv[2]) {
-	console.error("Usage:", process.argv[1], "<config>");
+	console.error("Usage:", process.argv[1], "<config file>");
+	console.error("      ", process.argv[1], "list");
 	process.exit(1);
 }
 
-var config = parseConf(process.argv[2]);
+var config;
 
 function createLogger(name) {
 	function log(pre, msg) {
@@ -34,7 +35,7 @@ function createLogger(name) {
 function startAll() {
 	Object.keys(modules).forEach(i => {
 		var mod = modules[i];
-		var conf = config[i] || {};
+		var conf = config[i];
 
 		if (conf instanceof Array && conf.length === 0)
 			return;
@@ -50,16 +51,30 @@ function stopAll(cb) {
 }
 
 function onTerm() {
-	udev.exit();
+	console.error("Exiting...");
 	stopAll(() => process.exit(1));
+	udev.exit();
 }
 
-syscheck(ok => {
-	if (ok)
-		startAll();
-	else
-		console.error("Missing binaries, exiting.");
-});
+if (process.argv[2] === "list") {
+	console.error("display:");
+	modules.display.list(() => {
+		console.error("input:");
+		modules.input.list(() => {
+			udev.exit();
+			process.exit(0);
+		});
+	});
+} else {
+	var config = parseConf(process.argv[2]);
 
-process.on("SIGTERM", onTerm);
-process.on("SIGINT", onTerm);
+	syscheck(ok => {
+		if (ok)
+			startAll();
+		else
+			console.error("Missing binaries, exiting.");
+	});
+
+	process.on("SIGTERM", onTerm);
+	process.on("SIGINT", onTerm);
+}

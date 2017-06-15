@@ -24,7 +24,7 @@ child.stdout.on("data", d => {
 
 	currstr = lines[lines.length - 1];
 });
-child.stderr.on("data", d => console.error(d.toString()));
+child.stderr.on("data", d => console.error("udev error:", d.toString()));
 
 var listq = [];
 var monitors = {};

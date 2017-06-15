@@ -1,0 +1,24 @@
+# display * {
+# 	mode max
+# 	rate max
+# 	where { left-of primary }
+# }
+
+input * {
+	type pointer
+	options [
+		[ "libinput Tapping Enabled" 1 ]
+	]
+}
+
+input * {
+	type keyboard
+	commands [
+		"xset r rate 200 60"
+		"setxkbmap dvorak -option ctrl:swapcaps -option altwin:swap_alt_win"
+	]
+}
+
+wallpaper {
+	path /home/martin/background.jpg
+}
