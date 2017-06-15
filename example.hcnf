@@ -1,8 +1,8 @@
-# display * {
-# 	mode max
-# 	rate max
-# 	where { left-of primary }
-# }
+display * {
+	mode max
+	rate max
+	where { left-of primary }
+}
 
 input * {
 	type pointer
