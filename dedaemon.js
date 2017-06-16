@@ -101,12 +101,6 @@ function reload() {
 	});
 }
 
-function loglol(sig) {
-	return function() {
-		logger.info("Received signal", sig);
-	}
-}
-
 function killRunningDaemon(signal, once) {
 	var cmd =
 		"pgrep -a node | "+
