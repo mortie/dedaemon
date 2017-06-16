@@ -1,3 +1,7 @@
+general {
+	log "$(HOME)/.dedaemon.log"
+}
+
 display * {
 	mode max
 	rate max

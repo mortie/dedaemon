@@ -3,6 +3,12 @@ var hconfig = require("hconfig");
 module.exports = parse;
 
 var configStructure = {
+	general: {
+		count: "once",
+		props: {
+			log: "string",
+		},
+	},
 	display: {
 		count: "many",
 		props: {
