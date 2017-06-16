@@ -92,11 +92,11 @@ while running relatively slow xrandr commands. I also find node's interface for
 spawning and interacting with child processes to be really nice.
 
 A lot of why people dislike node.js is dependency hell; any package has a dozen
-dependencies, eoch of which in turn has a dozen more sub-dependencies, etc. I
+dependencies, each of which in turn has a dozen more sub-dependencies, etc. I
 personally don't like that either. That's why dedaemon has exactly one
 dependency, counting transient dependencies, and that's my config file parser.
 At the time of writing, the entire thing is around 300 kilobytes, and that's
-counting the node\_modules folder and everything. 
+counting the `node_modules` folder and everything. 
 
 Even the code interacting with udev doesn't use the "proper" way of integrating
 C code with node, because that requires dependencies, and you suddenly end up
@@ -108,13 +108,13 @@ which I interact with by writing to its stdin and reading from its stdout.
 Dedaemon uses [my hconfig library](https://github.com/mortie/hconfig#syntax)
 to parse the config file. Refer to that page if you need help with the syntax.
 
-For a bigger and possibly more realistic config file, here's the one I
-personally use for my machines:
-https://github.com/mortie/nixConf/blob/master/.dedaemon.hcnf
-
 The file
 [example.hcnf](https://git.mort.coffee/mort/dedaemon/src/master/example.hcnf)
 contains some example configuration.
+
+For a bigger and possibly more realistic config file, here's the one I
+personally use for my machines:
+https://github.com/mortie/nixConf/blob/master/.dedaemon.hcnf
 
 ### General
 
