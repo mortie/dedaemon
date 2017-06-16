@@ -3,6 +3,22 @@
 DEDaemon is a daemon to give some of the perks of a full desktop environment to
 those of us running window managers.
 
+<!-- toc -->
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Installing](#installing)
+- [Why?](#why)
+  * [Why node.js?](#why-nodejs)
+- [Configuration](#configuration)
+  * [General](#general)
+  * [Display](#display)
+  * [Input](#input)
+  * [Wallpaper](#wallpaper)
+  * [Process](#process)
+
+<!-- tocstop -->
+
 ## Installation
 
 Run `npm install -g dedaemon` as root.
