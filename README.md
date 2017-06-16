@@ -25,6 +25,31 @@ adding `exec --no-startup-id dedaemon stop; dedaemon ~/.config/dedaemon.hcnf` to
 `~/.i3/config`. This first stop any running instance of dedaemon, then runs a
 new one.
 
+## Installing
+
+**If you already have a recent node.js and npm set up:**
+
+```
+sudo npm install -g dedaemon
+```
+
+**If you don't have a recent version of node.js:** (replace apt with your
+package manager of choice)
+
+```
+sudo apt install npm
+sudo npm install -g n
+sudo n stable
+sudo npm install -g dedaemon
+```
+
+Here, we first install npm, node's package manager. We then use that to install
+`n`, which is a handy tool to install node. We use `n` to install the
+current stable version of node, and then finally install dedaemon with npm.
+
+You might also be able to use your package manager's version of node, but some
+distros (**cough**debian**cough**) ship _really_ old versions.
+
 ## Why?
 
 I love using i3wm, but that means I'm running just a window manager, not a
@@ -44,6 +69,28 @@ wallpaper again. Whenever an input device is connected, it applies your desired
 xinput settings to the device, and re-runs whatever commands you desire
 (e.g xset, setxkbmap). It runs the applications and services you want to run on
 startup, and makes sure they are properly termminated when dedaemon stops.
+
+### Why node.js?
+
+I suspect a lot of people will wonder why on earth this is written in
+javascript and using node.js. The simple reason is that I like it. Newer
+versions of javascript has pretty nice syntax, and node.js is really quite good
+at asynchronous programming; a lot of what dedaemon does is sitting idle and
+waiting for events, and interacting with the system. It's nice to not block
+while running relatively slow xrandr commands. I also find node's interface for
+spawning and interacting with child processes to be really nice.
+
+A lot of why people dislike node.js is dependency hell; any package has a dozen
+dependencies, eoch of which in turn has a dozen more sub-dependencies, etc. I
+personally don't like that either. That's why dedaemon has exactly one
+dependency, counting transient dependencies, and that's my config file parser.
+At the time of writing, the entire thing is around 300 kilobytes, and that's
+counting the node\_modules folder and everything. 
+
+Even the code interacting with udev doesn't use the "proper" way of integrating
+C code with node, because that requires dependencies, and you suddenly end up
+with a hundred transient dependencies. Instead, I just wrote a tiny C program
+which I interract with by writing to its stdin and reading from its stdout.
 
 ## Configuration
 
