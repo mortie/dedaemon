@@ -5,7 +5,6 @@ those of us running window managers.
 
 <!-- toc -->
 
-- [Installation](#installation)
 - [Usage](#usage)
 - [Installing](#installing)
 - [Why?](#why)
@@ -18,10 +17,6 @@ those of us running window managers.
   * [Process](#process)
 
 <!-- tocstop -->
-
-## Installation
-
-Run `npm install -g dedaemon` as root.
 
 ## Usage
 
