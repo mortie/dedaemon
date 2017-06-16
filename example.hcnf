@@ -19,10 +19,10 @@ input * {
 	type keyboard
 	commands [
 		"xset r rate 200 60"
-		"setxkbmap dvorak -option ctrl:swapcaps -option altwin:swap_alt_win"
+		"setxkbmap us -option ctrl:swapcaps -option altwin:swap_alt_win"
 	]
 }
 
 wallpaper {
-	path /home/martin/background.jpg
+	path "$(HOME)/background.jpg"
 }

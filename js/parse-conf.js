@@ -32,6 +32,7 @@ var configStructure = {
 		props: {
 			name: "null",
 			path: "string",
+			mode: [ "string", "null" ],
 		},
 	},
 	process: {

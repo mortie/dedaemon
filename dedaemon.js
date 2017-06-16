@@ -18,7 +18,8 @@ var modules = {
 if (!process.argv[2]) {
 	console.error("Usage:", process.argv[1], "<config file>");
 	console.error("      ", process.argv[1], "list   -- List display and input devices");
-	console.error("      ", process.argv[1], "reload -- Reload the running daemon");
+	console.error("      ", process.argv[1], "reload -- Reload the running dedaemon instance");
+	console.error("      ", process.argv[1], "stop   -- Stop all running dedaemon instances");
 	process.exit(1);
 }
 
