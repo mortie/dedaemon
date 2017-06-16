@@ -108,6 +108,10 @@ which I interract with by writing to its stdin and reading from its stdout.
 Dedaemon uses [my hconfig library](https://github.com/mortie/hconfig#syntax)
 to parse the config file. Refer to that page if you need help with the syntax.
 
+For a bigger and possibly more realistic config file, here's the one I
+personally use for my machines:
+https://github.com/mortie/nixConf/blob/master/.dedaemon.hcnf
+
 The file
 [example.hcnf](https://git.mort.coffee/mort/dedaemon/src/master/example.hcnf)
 contains some example configuration.
