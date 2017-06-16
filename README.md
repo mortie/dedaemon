@@ -101,7 +101,7 @@ counting the node\_modules folder and everything.
 Even the code interacting with udev doesn't use the "proper" way of integrating
 C code with node, because that requires dependencies, and you suddenly end up
 with a hundred transient dependencies. Instead, I just wrote a tiny C program
-which I interract with by writing to its stdin and reading from its stdout.
+which I interact with by writing to its stdin and reading from its stdout.
 
 ## Configuration
 
