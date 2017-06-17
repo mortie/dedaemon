@@ -38,6 +38,12 @@ new one.
 
 ## Installing
 
+**First install libudev development headers if necessary:**
+
+```
+sudo apt install libudev-dev
+```
+
 **If you already have a recent node.js and npm set up:**
 
 ```
