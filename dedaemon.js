@@ -146,7 +146,7 @@ if (process.argv[2] === "list") {
 
 	syscheck(ok => {
 		if (ok)
-			setTimeout(startAll, 1000);
+			startAll();
 		else
 			console.error("Missing binaries, exiting.");
 	});
