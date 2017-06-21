@@ -31,9 +31,9 @@ e.g:
 
 `dedaemon ~/.config/dedaemon.hcnf`
 
-You probably want to run that on startup. If you're running i3wm, that means
+You'll probably want to run that on startup. If you're running i3wm, that means
 adding `exec --no-startup-id dedaemon stop; dedaemon ~/.config/dedaemon.hcnf` to
-`~/.i3/config`. This first stop any running instance of dedaemon, then runs a
+`~/.i3/config`. This will first stop any running instance of dedaemon, then run a
 new one.
 
 ## Installing
