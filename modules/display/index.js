@@ -128,8 +128,13 @@ function onchange() {
 				if (entry.name !== "*" && entry.name !== disp.id)
 					return;
 
-				applyRule(primary, entry, disp);
+				disp.rule = entry;
 			});
+		});
+
+		displays.forEach(disp => {
+			if (disp.rule)
+				applyRule(primary, disp.rule, disp);
 		});
 
 		setTimeout(() => modules.wallpaper.event("reload"), 400);
@@ -141,8 +146,10 @@ function start(conf_, logger_, modules_) {
 	logger = logger_ || logger;
 	modules = modules_ || modules;
 
-	onchange();
-	udev.monitor("drm", onchange);
+	xrandr.waitForX(() => {
+		onchange();
+		udev.monitor("drm", onchange);
+	});
 }
 
 function stop(cb) {

@@ -139,6 +139,13 @@ The `display` section controls a display. Refer to `dedaemon list` or `xrandr`
 to see what values are available. The `name` property can be `*` to affect all
 displays.
 
+Later configurations override previous configurations; if you have one
+configuration for `*` (meaning it applies to all displays), followed by one
+for `HDMI1`, only the `HDMI1` configuration will be applied to displays
+connected to the HDMI1 port. If you have one configuration for `HDMI1`,
+followed by one for `*`, only the `*` configuration will be applied to displays
+connected to HDMI1.
+
 ```
 display <name> {
 	mode <string | "max">
@@ -154,6 +161,12 @@ display <name> {
 The `input` section controls an input device. Refer to `dedaemon list` or
 `xinput list` to see a list of devices. The `name` property can be `*` to
 affect all input devices.
+
+In contrast with `display`, all matching configurations will be applied to an
+input device. If you have one section named `*`, and one named say
+`Logitech HID compliant keyboard`, both with `type keyboard`, the settings for
+both `*` and for `Logitech HID compliant keyboard` will be applied to the
+device.
 
 ```
 input <name> {

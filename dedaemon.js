@@ -81,6 +81,7 @@ function onTerm() {
 	logger.info("Exiting...");
 	stopAll(() => {
 		udev.exit();
+		logger.info("All modules stopped.");
 		process.exit(1)
 	});
 }

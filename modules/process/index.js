@@ -74,7 +74,7 @@ class Process {
 
 			this.onexit();
 		});
-		this.child.once("close", code => {
+		this.child.once("exit", code => {
 			this.running = false;
 			if (this.stopping)
 				return;
@@ -99,6 +99,7 @@ class Process {
 			if (this.running) {
 				this.info("Sending SIGKILL.");
 				this.child.kill("SIGKILL");
+				cb();
 			}
 
 			this.stopping = false;

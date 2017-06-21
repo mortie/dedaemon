@@ -1,6 +1,7 @@
 var spawn = require("child_process").spawn;
 
 exports.list = list;
+exports.waitForX = waitForX;
 
 function parseScreen(line) {
 	var rxId = /Screen (\d+)/;
@@ -146,4 +147,18 @@ function list(cb) {
 		var devs = parse(output);
 		cb(devs);
 	});
+}
+
+function waitForX(cb) {
+	function run() {
+		var child = spawn("xset", [ "-q" ]);
+		child.once("exit", (code) => {
+			if (code === 0)
+				cb();
+			else
+				setTimeout(run, 50);
+		});
+	}
+
+	run();
 }
