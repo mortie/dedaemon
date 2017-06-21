@@ -6,6 +6,7 @@ var async = require("./js/async");
 var udev = require("./udev");
 
 var execSync = require("child_process").execSync
+var spawnSync = require("child_process").spawnSync
 var fs = require("fs");
 
 var modules = {
@@ -102,7 +103,7 @@ function reload() {
 	});
 }
 
-function killRunningDaemon(signal, once) {
+function killRunningDaemon(signal, once, waitConfirm) {
 	var cmd =
 		"pgrep -a node | "+
 		"grep dedaemon | "+
@@ -123,13 +124,29 @@ function killRunningDaemon(signal, once) {
 	}
 
 	lines.forEach(line => {
-		execSync("kill -s "+signal+" "+line);
+		spawnSync("kill", [ "-s", signal,  line ]);
 		console.error("Sent", "SIG"+signal, "to process", line);
 	});
-	process.exit(0);
+
+	if (!waitConfirm)
+		return;
+
+	var exists;
+	do {
+		exists = false;
+		lines.forEach(line => {
+			var res = spawnSync("kill", [ "-0", line ]);
+			if (res.status === 0)
+				exists = true;
+		});
+
+		if (exists)
+			spawnSync("sleep", [ "0.2" ]);
+	} while (exists);
 }
 
 if (process.argv[2] === "list") {
+	udev.init();
 	console.error("display:");
 	modules.display.list(() => {
 		console.error("input:");
@@ -140,9 +157,12 @@ if (process.argv[2] === "list") {
 	});
 } else if (process.argv[2] === "reload") {
 	killRunningDaemon("USR1", true);
+	process.exit(0);
 } else if (process.argv[2] === "stop") {
-	killRunningDaemon("TERM");
+	killRunningDaemon("TERM", false, true);
+	process.exit(0);
 } else {
+	udev.init();
 	var config = parseConf(process.argv[2]);
 
 	syscheck(ok => {

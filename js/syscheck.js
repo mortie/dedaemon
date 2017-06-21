@@ -4,7 +4,13 @@ module.exports = check;
 
 var needed = [
 	"feh",
-	"xinput"
+	"xinput",
+	"xset",
+	"pgrep",
+	"grep",
+	"cut",
+	"kill",
+	"sleep",
 ];
 
 function need(str, cb) {

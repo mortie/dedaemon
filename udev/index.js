@@ -1,30 +1,35 @@
 var spawn = require("child_process").spawn;
 
-var child = spawn(__dirname+"/udev-monitor");
-
 exports.list = list;
 exports.monitor = monitor;
 exports.unmonitor = unmonitor;
 exports.exit = exit;
+exports.init = init;
 
-var currstr = "";
-child.stdout.setEncoding("utf8");
-child.stdout.on("data", d => {
-	var lines = d.toString().split("\n");
+var child;
 
-	currstr += lines[0];
-	if (lines.length === 1)
-		return;
+function init(cb) {
+	child = spawn(__dirname+"/udev-monitor");
 
-	ondata(JSON.parse(currstr));
+	var currstr = "";
+	child.stdout.setEncoding("utf8");
+	child.stdout.on("data", d => {
+		var lines = d.toString().split("\n");
 
-	for (var i = 1; i < lines.length -1; ++i) {
-		ondata(JSON.parse(lines[i]));
-	}
+		currstr += lines[0];
+		if (lines.length === 1)
+			return;
 
-	currstr = lines[lines.length - 1];
-});
-child.stderr.on("data", d => console.error("udev error:", d.toString()));
+		ondata(JSON.parse(currstr));
+
+		for (var i = 1; i < lines.length -1; ++i) {
+			ondata(JSON.parse(lines[i]));
+		}
+
+		currstr = lines[lines.length - 1];
+	});
+	child.stderr.on("data", d => console.error("udev error:", d.toString()));
+}
 
 var listq = [];
 var monitors = {};
