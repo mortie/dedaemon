@@ -47,7 +47,7 @@ sudo apt install libudev-dev
 **If you already have a recent node.js and npm set up:**
 
 ```
-sudo npm install -g dedaemon
+sudo npm install -g --unsafe-perm dedaemon
 ```
 
 **If you don't have a recent version of node.js:** (replace apt with your
@@ -57,7 +57,7 @@ package manager of choice)
 sudo apt install npm
 sudo npm install -g n
 sudo n stable
-sudo npm install -g dedaemon
+sudo npm install -g --unsafe-perm dedaemon
 ```
 
 Here, we first install npm, node's package manager. We then use that to install
@@ -66,6 +66,13 @@ current stable version of node, and then finally install dedaemon with npm.
 
 You might also be able to use your package manager's version of node, but some
 distros (**cough**debian**cough**) ship _really_ old versions.
+
+**The reason --unsafe-perm is required** is that during installation, I compile
+the C code in the `udev/` directory, which interfaces with libudev, with a
+postinstall script. After NPM 5, postinstall scripts don't have write access to
+the directory the package is installed to. If you don't feel comfortable with
+running with `--unsafe-perm`, you can clone this repository, and run
+`npm run postinstall; sudo npm install -g` manually from within the directory.
 
 ## Why?
 

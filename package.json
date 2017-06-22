@@ -1,11 +1,11 @@
 {
   "name": "dedaemon",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "",
   "main": "daemon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "make -C udev"
+    "postinstall": "echo $USER $GROUP; make -C udev"
   },
   "repository": {
     "type": "git",
