@@ -134,7 +134,7 @@ function onchange(dev) {
 		else if (entry.type === "keyboard")
 			name = "keyboard:"+name
 		else
-			return log.error("Invalid input type: "+entry.type);
+			return logger.error("Invalid input type: "+entry.type);
 
 		// If the entry matches everything, we don't need to print xinput warnings
 		var suppressWarnings = entry.name === "*";
