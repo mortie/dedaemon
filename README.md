@@ -201,10 +201,11 @@ starts.
 
 ```
 process <name> {
-	run <array of strings> -- Command
-	in <directory>         -- Working directory
-	env <object>           -- Environment variables
-	delay <number>         -- Number of milliseconds to wait before executing
+	run <array of strings>   -- Command
+	as <"process" | "group"> -- Run a single command or an array or commands
+	in <directory>           -- Working directory
+	env <object>             -- Environment variables
+	delay <number>           -- Number of milliseconds to wait before executing
 }
 ```
 
