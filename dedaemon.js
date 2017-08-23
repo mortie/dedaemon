@@ -166,10 +166,12 @@ if (process.argv[2] === "list") {
 	var config = parseConf(process.argv[2]);
 
 	syscheck(ok => {
-		if (ok)
+		if (ok) {
 			startAll();
-		else
+		} else {
 			console.error("Missing binaries, exiting.");
+			process.exit(1);
+		}
 	});
 
 	process.on("SIGTERM", onTerm);

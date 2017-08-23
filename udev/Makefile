@@ -5,6 +5,7 @@ HDR=src/json.h
 
 $(TARGET): $(SRC) $(HDR)
 	$(CC) -o $(TARGET) -g $(shell pkg-config --cflags --libs libudev) $(SRC)
+	chmod +x $(TARGET)
 
 clean:
 	rm -f $(TARGET)
