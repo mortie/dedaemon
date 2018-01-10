@@ -2,6 +2,7 @@ var udev = require("../../udev");
 var xrandr = require("./xrandr");
 var table = require("../../js/table");
 var spawn = require("child_process").spawn;
+var debounce = require("../../js/debounce");
 
 exports.start = start;
 exports.stop = stop;
@@ -148,7 +149,7 @@ function start(conf_, logger_, modules_) {
 
 	xrandr.waitForX(() => {
 		onchange();
-		udev.monitor("drm", onchange);
+		udev.monitor("drm", debounce(onchange, 1000));
 	});
 }
 
