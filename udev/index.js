@@ -67,7 +67,7 @@ function monitor(ss, cb) {
 
 function unmonitor(ss, cb) {
 	if (monitors[ss] == null)
-		throw new Error("Callback function for "+ss+" not registered");
+		return console.warn("Callback function for "+ss+" not registered");
 
 	var removed = false;
 	for (var i in monitors[ss]) {

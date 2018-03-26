@@ -64,10 +64,14 @@ function startAll() {
 	Object.keys(modules).forEach(i => {
 		var mod = modules[i];
 		var conf = config[i];
+		mod.running = false;
 
 		if (conf instanceof Array && conf.length === 0)
 			return;
+		if (!conf)
+			return;
 
+		mod.running = true;
 		mod.start(conf, createLogger(i), modules);
 	});
 }
@@ -75,7 +79,12 @@ function startAll() {
 function stopAll(cb) {
 	var keys = Object.keys(modules);
 	var next = async(keys.length, cb);
-	keys.forEach(i => modules[i].stop(next));
+	keys.forEach(i => {
+		if (modules[i].running) {
+			modules[i].stop(next);
+			modules[i].running = false;
+		}
+	});
 }
 
 function onTerm() {
