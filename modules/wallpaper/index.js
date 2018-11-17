@@ -69,6 +69,8 @@ function start(conf_, logger_, modules_) {
 
 		run();
 	});
+
+	runFeh();
 }
 
 function stop(cb) {

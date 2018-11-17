@@ -83,6 +83,8 @@ function stopAll(cb) {
 		if (modules[i].running) {
 			modules[i].stop(next);
 			modules[i].running = false;
+		} else {
+			next();
 		}
 	});
 }
